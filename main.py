@@ -4,7 +4,7 @@ from discord.utils import get
 from cogs.giveRoles import giveRoles
 from cogs.tempVoice import tempVoice
 
-TOKEN = "STRING"
+TOKEN = ""
 client = commands.Bot(command_prefix="!")
 
 @client.event
