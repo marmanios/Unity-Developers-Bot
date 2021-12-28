@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from Cogs.giveRoles import giveRoles
+from cogs.giveRoles import giveRoles
+from cogs.tempVoice import tempVoice
 
-TOKEN = "String"
+TOKEN = "OTI1MjQ4NDgxNTU0MjAyNjM0.YcqWzA.EyO1-yHygDgpPwe5pSGFu6A1FM8"
 client = commands.Bot(command_prefix="!")
 
 @client.event
@@ -12,6 +13,7 @@ async def on_ready():
   print("ready")
 
 client.add_cog(giveRoles(client))
+client.add_cog(tempVoice(client,925245288149549086))
 
 @client.command()
 async def Help(ctx):
