@@ -1,26 +1,17 @@
 import discord
+from discord import embeds
 from discord.ext import commands
 from discord.ext.commands.errors import ChannelNotReadable
 from discord.utils import get
 
-
-
-rolls_channel_id = None
-tempChannels = []
-
 class tempVoice(commands.Cog):
-    def __init__(self, bot, channel):
+    def __init__(self, bot):
         self.bot = bot
-        self.template_channel_IDs = [channel]
+        self.template_channel_IDs = []
+        self.tempChannels = []
     
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after): 
-        """
-        print(before)
-        print(after)
-        print()
-        print()
-        """
         #Check for template channel
         try:
             if after.channel.id in self.template_channel_IDs:
@@ -31,47 +22,58 @@ class tempVoice(commands.Cog):
                 await temp_channel.edit(category = channel_category)
                 await temp_channel.edit(sync_permissions = True)
                 await member.move_to(temp_channel)
-                tempChannels.append(temp_channel)
+                self.tempChannels.append(temp_channel)
 
         except:
             pass
         
-        for channel in tempChannels:
+        for channel in self.tempChannels:
             if len(channel.members) == 0:
                 await channel.delete()
-                tempChannels.remove(channel)
+                self.tempChannels.remove(channel)
 
 
     @commands.command()
     async def addTemplateChannel(self, ctx, id):
+        
         for channel in ctx.guild.channels:
-            if id == str(channel.id):
+            if id == str(channel.id) and channel.id not in self.template_channel_IDs:
                 self.template_channel_IDs.append(channel.id)
                 await ctx.send('Added Channel: "{channel}" to Template Channel List'.format(channel=channel))
                 return
-        await ctx.send("Invalid channel ID")
+
+        await ctx.send("Invalid channel ID or Duplicate")
 
     @commands.command()
     async def removeTemplateChannel(self, ctx, id):
         for channel in ctx.guild.channels:
             if (id == str(channel.id)) and (channel.id in self.template_channel_IDs):
-                await ctx.send("Ey")
                 self.template_channel_IDs.remove(int(id))
-                await ctx.send("Removed Channel \"{channel}\" From Template Channel List".format(channel=ctx.guild.get))
+                channel_name = get(ctx.guild.channels, id=int(id))
+                await ctx.send("Removed Channel \"{channel}\" From Template Channel List".format(channel= channel_name))
                 return
         
         await ctx.send("Invalid ID. You sent {id}".format(id = id))
 
     @commands.command()
     async def listTemplateChannels(self, ctx):
+        embed = discord.Embed(title = "Template Channels")
+        nameslist = []
         for channelID in self.template_channel_IDs:
             channel = discord.utils.get(ctx.guild.channels, id=channelID)
-            
             #Remove manually deleted template channels still in list
             if channel == None:
                 self.template_channel_IDs.remove(channelID)
             else:
-                await ctx.send(channel)
+                nameslist.append(channel.name)
+
+        nameslist = '\n'.join(nameslist) # Joining the list with newline as the delimiter
+        if len(nameslist) == 0:
+            embed.add_field(name="Template Channels List", value="No Channels")
+        else:
+            embed.add_field(name="Template Channels List", value=nameslist)
+        await ctx.send(embed=embed)
+        
                
             
         

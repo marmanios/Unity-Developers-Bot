@@ -25,15 +25,12 @@ class giveRoles(commands.Cog):
         
         if (reaction.emoji in emojis):
             Role = get(reaction.message.guild.roles, id = emojis[reaction.emoji])
-            #print("Adding ", Role.name, " to ", user.name)
             await user.add_roles(Role)
 
         else:
             await reaction.message.remove_reaction(reaction.emoji, user)
-            #print("Removed invalid reaction by", user.name)
     
     @commands.command()
     async def createRollPoll(self, ctx):
         global polls_msg
         polls_msg = await ctx.send("EMBED")
-        #print(polls_msg)
