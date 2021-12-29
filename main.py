@@ -6,7 +6,7 @@ from cogs.tempVoice import tempVoice
 from cogs.macNews import macNews
 from cogs.welcome import welcome
 
-TOKEN = "OTI1MjQ4NDgxNTU0MjAyNjM0.YcqWzA.tE3fxihTC-rVIZPBTe0R0V9pgBU"
+TOKEN = "String"
 client = commands.Bot(command_prefix="!")
 
 @client.event
