@@ -4,8 +4,9 @@ from discord.utils import get
 from cogs.giveRoles import giveRoles
 from cogs.tempVoice import tempVoice
 from cogs.macNews import macNews
+from cogs.welcome import welcome
 
-TOKEN = ""
+TOKEN = "OTI1MjQ4NDgxNTU0MjAyNjM0.YcqWzA.tE3fxihTC-rVIZPBTe0R0V9pgBU"
 client = commands.Bot(command_prefix="!")
 
 @client.event
@@ -16,6 +17,7 @@ async def on_ready():
 client.add_cog(giveRoles(client))
 client.add_cog(macNews(client))
 client.add_cog(tempVoice(client))
+client.add_cog(welcome(client))
 
 @client.command()
 async def Help(ctx):
