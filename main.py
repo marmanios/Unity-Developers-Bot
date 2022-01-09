@@ -5,8 +5,8 @@ from cogs.giveRoles import giveRoles
 from cogs.tempVoice import tempVoice
 from cogs.macNews import macNews
 from cogs.welcome import welcome
+from cogs.birthday import birthday
 
-TOKEN = "String"
 client = commands.Bot(command_prefix="!")
 
 @client.event
@@ -17,6 +17,7 @@ async def on_ready():
 client.add_cog(giveRoles(client))
 client.add_cog(macNews(client))
 client.add_cog(tempVoice(client))
+#client.add_cog(birthday(client))
 client.add_cog(welcome(client))
 
 @client.command()
@@ -28,4 +29,4 @@ async def Help(ctx):
 
   await ctx.send(embed=embed)
 
-client.run(TOKEN)
+client.run()

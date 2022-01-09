@@ -7,7 +7,7 @@ from discord.utils import get
 class tempVoice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.template_channel_IDs = []
+        self.template_channel_IDs = [925232981294063627]
         self.tempChannels = []
     
     @commands.Cog.listener()
