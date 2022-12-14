@@ -1,31 +1,30 @@
 import discord
-from discord.ext import commands
-from discord.utils import get
-from cogs.giveRoles import giveRoles
-from cogs.tempVoice import tempVoice
-from cogs.macNews import macNews
-from cogs.welcome import welcome
+import os
 
-TOKEN = "String"
-client = commands.Bot(command_prefix="!")
+from dotenv import load_dotenv
+
+from tempVoice.tempVoice import tempVoice
+from Music.music import Music
+
+
+intents = discord.Intents.default()
+intents.members = True
+client = discord.ext.commands.Bot(command_prefix='!', intents=intents)
 
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
+  await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Bussin"))
   print("ready")
 
-client.add_cog(giveRoles(client))
-client.add_cog(macNews(client))
-client.add_cog(tempVoice(client))
-client.add_cog(welcome(client))
+client.add_cog(tempVoice(client, 669400622038253568))
+client.add_cog(Music(client))
 
 @client.command()
-async def Help(ctx):
-  embed = discord.Embed(title= "McMaster Unity Developers", url="https://google.com",
-  description= "Insert description here", color = 0xFF5733)
+async def restartMusic(ctx):
+  client.remove_cog(Music(client))
+  client.add_cog(Music(client))
 
-  embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/925241975886712852/925258137752195112/Unity_2021.svg.png")
+load_dotenv()
 
-  await ctx.send(embed=embed)
-
-client.run(TOKEN)
+client.run(os.getenv('BOT_TOKEN'))
